@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} - {{ APP_NAME }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="main" style="max-width:1200px;margin:0 auto;padding:24px">
+  <div class="doc-head" style="display:block">
+    <h2>Sahan Fleet Transport Management System</h2>
+    <p>{{ title }} &middot; Generated {{ generated }}</p>
+  </div>
+
+  <div class="toolbar no-print">
+    <div class="left"><a class="btn" href="{{ url_for('exports.reports') }}">&larr; Reports</a></div>
+    <div class="right">
+      <a class="btn" href="{{ url_for('exports.to_csv', key=request.view_args.key) }}">Download CSV</a>
+      <a class="btn" href="{{ url_for('exports.to_pdf', key=request.view_args.key) }}">Download PDF</a>
+      <button class="btn btn-primary" type="button" onclick="window.print()">Print</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>{% for h in headers %}<th>{{ h }}</th>{% endfor %}</tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>{% for h in headers %}<td>{{ row[h] }}</td>{% endfor %}</tr>
+        {% else %}
+        <tr><td colspan="{{ headers | length }}" class="empty">No records</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="muted mt" style="font-size:12px">{{ rows | length }} record(s)</p>
+</div>
+</body>
+</html>

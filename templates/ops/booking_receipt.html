@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Receipt {{ b.booking_no }} - {{ APP_NAME }}{% endblock %}
+{% block heading %}Booking Receipt{% endblock %}
+{% block content %}
+
+<div class="doc-head">
+  <h2>Sahan Fleet Transport Management System</h2>
+  <p>Booking Receipt {{ b.booking_no }}</p>
+</div>
+
+<div class="toolbar no-print">
+  <div class="left"><a class="btn" href="{{ url_for('operations.bookings') }}">&larr; Back to bookings</a></div>
+  <div class="right"><button class="btn" type="button" onclick="window.print()">Print / Save PDF</button></div>
+</div>
+
+<div class="panel" style="max-width:640px">
+  <h2>Receipt</h2>
+  <table>
+    <tbody>
+      <tr><th>Booking No</th><td>{{ b.booking_no }}</td></tr>
+      <tr><th>Status</th><td><span class="badge {{ b.status }}">{{ b.status }}</span></td></tr>
+      <tr><th>Passenger</th><td>{{ b.passenger_name }}</td></tr>
+      <tr><th>Phone</th><td>{{ b.phone or '-' }}</td></tr>
+      <tr><th>Trip</th><td>{{ b.trip_no or '-' }}{% if b.route_name %} ({{ b.route_name }}){% endif %}</td></tr>
+      <tr><th>Schedule</th><td>{{ b.departure_at or '-' }}</td></tr>
+      <tr><th>Route</th><td>{{ (b.origin ~ ' &rarr; ' ~ b.destination) | safe if b.origin else '-' }}</td></tr>
+      <tr><th>Vehicle</th><td>{{ b.plate_no or '-' }}</td></tr>
+      <tr><th>Driver</th><td>{{ b.driver_name or '-' }}</td></tr>
+      <tr><th>Pickup</th><td>{{ b.pickup or '-' }}</td></tr>
+      <tr><th>Drop-off</th><td>{{ b.dropoff or '-' }}</td></tr>
+      <tr><th>Seats</th><td>{{ b.seats }}</td></tr>
+      <tr><th>Fare</th><td><strong>{{ '%.2f' | format(b.fare) }}</strong></td></tr>
+      <tr><th>Booked at</th><td>{{ b.created_at }}</td></tr>
+    </tbody>
+  </table>
+  <p class="muted mt">This receipt is computer generated. Issued by Sahan Fleet Transport Management System.</p>
+</div>
+
+{% endblock %}

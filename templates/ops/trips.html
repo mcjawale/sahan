@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "macros.html" import list_toolbar, doc_head %}
+{% block title %}Trips - {{ APP_NAME }}{% endblock %}
+{% block heading %}Trips{% endblock %}
+{% block content %}
+{{ doc_head('Trip Report') }}
+{{ list_toolbar(q, url_for('operations.trip_new'), 'New Trip', 'trips', status, statuses) }}
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Trip No</th><th>Route</th><th>Vehicle</th><th>Driver</th>
+        <th>Departure</th><th>Arrival</th><th class="num">Dist</th>
+        <th class="num">Seats</th><th class="num">Revenue</th><th>Status</th><th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in rows %}
+      <tr>
+        <td><strong><a href="{{ url_for('operations.trip_sheet', tid=t.id) }}">{{ t.trip_no }}</a></strong></td>
+        <td>{{ t.route_name or '-' }}<br><span class="muted">{{ t.origin or '' }} &rarr; {{ t.destination or '' }}</span></td>
+        <td>{{ t.plate_no or '-' }}<br><span class="muted">{{ (t.vmake ~ ' ' ~ t.vmodel) if t.vmake else '' }}</span></td>
+        <td>{{ t.driver_name or '-' }}</td>
+        <td>{{ t.departure_at or '-' }}</td>
+        <td>{{ t.arrival_at or '-' }}</td>
+        <td class="num">{{ '%.1f' | format(t.distance_km) if t.distance_km else '-' }}</td>
+        <td class="num">{{ t.seats_booked }}</td>
+        <td class="num">{{ '%.2f' | format(t.revenue) }}</td>
+        <td><span class="badge {{ t.status }}">{{ t.status.replace('_',' ') }}</span></td>
+        <td class="no-print">
+          <div class="actions">
+            <a class="btn btn-sm" href="{{ url_for('operations.trip_sheet', tid=t.id) }}">Sheet</a>
+            <a class="btn btn-sm" href="{{ url_for('operations.trip_edit', tid=t.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('operations.trip_delete', tid=t.id) }}"
+                  onsubmit="return confirm('Delete trip {{ t.trip_no }}?');">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="11" class="empty">No trips found</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

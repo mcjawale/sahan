@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if record else 'New' }} Maintenance - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Maintenance Record' if record else 'New Maintenance Record' }}{% endblock %}
+{% block content %}
+<div class="panel" style="max-width:680px">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label>Vehicle *</label>
+        <select name="vehicle_id" required>
+          <option value="">-- select --</option>
+          {% for v in vehicles %}
+          <option value="{{ v.id }}" {% if record and record.vehicle_id == v.id %}selected{% endif %}>
+            {{ v.plate_no }} - {{ v.make }} {{ v.model }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <select name="maintenance_type">
+          {% for t in maint_types %}
+          <option value="{{ t }}" {% if record and record.maintenance_type == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Started *</label>
+        <input type="date" name="started_at" required value="{{ record.started_at if record else '' }}">
+      </div>
+      <div class="field">
+        <label>Completed</label>
+        <input type="date" name="completed_at" value="{{ record.completed_at if record and record.completed_at else '' }}">
+      </div>
+      <div class="field">
+        <label>Cost</label>
+        <input type="number" name="cost" min="0" step="0.01" value="{{ record.cost if record else 0 }}">
+      </div>
+      <div class="field">
+        <label>Odometer (km)</label>
+        <input type="number" name="odometer" min="0" step="0.1" value="{{ record.odometer if record and record.odometer is not none else '' }}">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select name="status">
+          {% for s in maint_status %}
+          <option value="{{ s }}" {% if record and record.status == s %}selected{% endif %}>{{ s.replace('_',' ') }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Next due</label>
+        <input type="date" name="next_due" value="{{ record.next_due if record and record.next_due else '' }}">
+      </div>
+      <div class="field wide">
+        <label>Description</label>
+        <textarea name="description">{{ record.description if record and record.description else '' }}</textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if record else 'Add record' }}</button>
+      <a class="btn" href="{{ url_for('records.maintenance') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

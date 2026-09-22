@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if vehicle else 'New' }} Vehicle - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Vehicle ' + vehicle.plate_no if vehicle else 'New Vehicle' }}{% endblock %}
+{% block content %}
+<div class="panel">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label>Plate number *</label>
+        <input type="text" name="plate_no" required value="{{ vehicle.plate_no if vehicle else '' }}" placeholder="SF-007">
+      </div>
+      <div class="field">
+        <label>Make *</label>
+        <input type="text" name="make" required value="{{ vehicle.make if vehicle else '' }}">
+      </div>
+      <div class="field">
+        <label>Model *</label>
+        <input type="text" name="model" required value="{{ vehicle.model if vehicle else '' }}">
+      </div>
+      <div class="field">
+        <label>Year</label>
+        <input type="number" name="year" min="1980" max="2100" value="{{ vehicle.year if vehicle and vehicle.year else '' }}">
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <select name="vehicle_type">
+          {% for t in vehicle_types %}
+          <option value="{{ t }}" {% if vehicle and vehicle.vehicle_type == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Fuel type</label>
+        <select name="fuel_type">
+          {% for f in ['diesel', 'petrol', 'electric', 'hybrid', 'cng'] %}
+          <option value="{{ f }}" {% if vehicle and vehicle.fuel_type == f %}selected{% endif %}>{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Capacity (seats / payload)</label>
+        <input type="number" name="capacity" min="0" value="{{ vehicle.capacity if vehicle else 0 }}">
+      </div>
+      <div class="field">
+        <label>Odometer (km)</label>
+        <input type="number" name="odometer" min="0" step="0.1" value="{{ vehicle.odometer if vehicle else 0 }}">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select name="status">
+          {% for s in vehicle_status %}
+          <option value="{{ s }}" {% if vehicle and vehicle.status == s %}selected{% endif %}>{{ s.replace('_',' ') }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field wide">
+        <label>Notes</label>
+        <textarea name="notes">{{ vehicle.notes if vehicle else '' }}</textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if vehicle else 'Add vehicle' }}</button>
+      <a class="btn" href="{{ url_for('fleet.vehicles') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

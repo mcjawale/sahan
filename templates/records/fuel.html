@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "macros.html" import list_toolbar, doc_head %}
+{% block title %}Fuel - {{ APP_NAME }}{% endblock %}
+{% block heading %}Fuel Records{% endblock %}
+{% block content %}
+{{ doc_head('Fuel Consumption Report') }}
+{{ list_toolbar(q, url_for('records.fuel_new'), 'Add Fuel Record', 'fuel') }}
+
+<div class="cards">
+  <div class="card accent"><div class="label">Records</div><div class="value sm">{{ rows | length }}</div></div>
+  <div class="card accent"><div class="label">Total Liters</div><div class="value sm">{{ '%.1f' | format(total_liters) }}</div></div>
+  <div class="card accent-2"><div class="label">Total Cost</div><div class="value sm">{{ '%.2f' | format(total_cost) }}</div></div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Ref No</th><th>Date</th><th>Vehicle</th><th class="num">Liters</th>
+        <th class="num">Cost</th><th class="num">Cost/L</th><th>Station</th>
+        <th class="num">Odometer</th><th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in rows %}
+      <tr>
+        <td><strong>{{ f.ref_no or '-' }}</strong></td>
+        <td>{{ f.filled_at }}</td>
+        <td>{{ f.plate_no }} <span class="muted">{{ f.make }} {{ f.model }}</span></td>
+        <td class="num">{{ '%.1f' | format(f.liters) }}</td>
+        <td class="num">{{ '%.2f' | format(f.cost) }}</td>
+        <td class="num">{{ '%.2f' | format(f.cost / f.liters) if f.liters else '-' }}</td>
+        <td>{{ f.station or '-' }}</td>
+        <td class="num">{{ '%.0f' | format(f.odometer) if f.odometer else '-' }}</td>
+        <td class="no-print">
+          <div class="actions">
+            <a class="btn btn-sm" href="{{ url_for('records.fuel_edit', fid=f.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('records.fuel_delete', fid=f.id) }}"
+                  onsubmit="return confirm('Delete fuel record {{ f.ref_no }}?');">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="empty">No fuel records</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

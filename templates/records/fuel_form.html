@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if record else 'New' }} Fuel Record - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Fuel Record' if record else 'New Fuel Record' }}{% endblock %}
+{% block content %}
+<div class="panel" style="max-width:640px">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label>Vehicle *</label>
+        <select name="vehicle_id" required>
+          <option value="">-- select --</option>
+          {% for v in vehicles %}
+          <option value="{{ v.id }}" {% if record and record.vehicle_id == v.id %}selected{% endif %}>
+            {{ v.plate_no }} - {{ v.make }} {{ v.model }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Ref no (auto if blank)</label>
+        <input type="text" name="ref_no" value="{{ record.ref_no if record and record.ref_no else '' }}">
+      </div>
+      <div class="field">
+        <label>Date filled *</label>
+        <input type="date" name="filled_at" required value="{{ record.filled_at if record else '' }}">
+      </div>
+      <div class="field">
+        <label>Liters *</label>
+        <input type="number" name="liters" min="0" step="0.01" required value="{{ record.liters if record else '' }}">
+      </div>
+      <div class="field">
+        <label>Cost *</label>
+        <input type="number" name="cost" min="0" step="0.01" required value="{{ record.cost if record else '' }}">
+      </div>
+      <div class="field">
+        <label>Station</label>
+        <input type="text" name="station" value="{{ record.station if record else '' }}">
+      </div>
+      <div class="field">
+        <label>Odometer (km)</label>
+        <input type="number" name="odometer" min="0" step="0.1" value="{{ record.odometer if record and record.odometer is not none else '' }}">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if record else 'Add record' }}</button>
+      <a class="btn" href="{{ url_for('records.fuel') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

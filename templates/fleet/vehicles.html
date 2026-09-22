@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "macros.html" import list_toolbar, doc_head %}
+{% block title %}Vehicles - {{ APP_NAME }}{% endblock %}
+{% block heading %}Vehicles{% endblock %}
+{% block content %}
+{{ doc_head('Vehicle Register') }}
+{{ list_toolbar(q, url_for('fleet.vehicle_new'), 'Add Vehicle', 'vehicles') }}
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Plate No</th><th>Vehicle</th><th>Type</th><th>Fuel</th>
+        <th class="num">Capacity</th><th class="num">Odometer</th><th>Status</th><th>Notes</th><th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in rows %}
+      <tr>
+        <td><strong>{{ v.plate_no }}</strong></td>
+        <td>{{ v.make }} {{ v.model }} {% if v.year %}<span class="muted">({{ v.year }})</span>{% endif %}</td>
+        <td>{{ v.vehicle_type }}</td>
+        <td>{{ v.fuel_type }}</td>
+        <td class="num">{{ v.capacity }}</td>
+        <td class="num">{{ '%.0f' | format(v.odometer) }}</td>
+        <td><span class="badge {{ v.status }}">{{ v.status.replace('_',' ') }}</span></td>
+        <td class="muted">{{ v.notes or '' }}</td>
+        <td class="no-print">
+          <div class="actions">
+            <a class="btn btn-sm" href="{{ url_for('fleet.vehicle_edit', vid=v.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('fleet.vehicle_delete', vid=v.id) }}"
+                  onsubmit="return confirm('Delete vehicle {{ v.plate_no }}?');">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="empty">No vehicles found</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

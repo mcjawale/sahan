@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "macros.html" import list_toolbar, doc_head %}
+{% block title %}Maintenance - {{ APP_NAME }}{% endblock %}
+{% block heading %}Maintenance Records{% endblock %}
+{% block content %}
+{{ doc_head('Maintenance Report') }}
+{{ list_toolbar(q, url_for('records.maintenance_new'), 'Add Record', 'maintenance') }}
+
+<div class="cards">
+  <div class="card accent"><div class="label">Records</div><div class="value sm">{{ rows | length }}</div></div>
+  <div class="card accent-2"><div class="label">Open Jobs</div><div class="value sm">{{ open_count }}</div></div>
+  <div class="card accent-2"><div class="label">Total Cost</div><div class="value sm">{{ '%.2f' | format(total_cost) }}</div></div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Vehicle</th><th>Type</th><th>Description</th><th>Started</th>
+        <th>Completed</th><th class="num">Cost</th><th>Status</th><th>Next Due</th>
+        <th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in rows %}
+      <tr>
+        <td>{{ m.plate_no }} <span class="muted">{{ m.make }} {{ m.model }}</span></td>
+        <td>{{ m.maintenance_type }}</td>
+        <td>{{ m.description or '-' }}</td>
+        <td>{{ m.started_at }}</td>
+        <td>{{ m.completed_at or '-' }}</td>
+        <td class="num">{{ '%.2f' | format(m.cost) }}</td>
+        <td><span class="badge {{ m.status }}">{{ m.status.replace('_',' ') }}</span></td>
+        <td>{{ m.next_due or '-' }}</td>
+        <td class="no-print">
+          <div class="actions">
+            <a class="btn btn-sm" href="{{ url_for('records.maintenance_edit', mid=m.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('records.maintenance_delete', mid=m.id) }}"
+                  onsubmit="return confirm('Delete this maintenance record?');">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="empty">No maintenance records</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

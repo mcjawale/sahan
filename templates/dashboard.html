@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - {{ APP_NAME }}{% endblock %}
+{% block heading %}Command Center{% endblock %}
+{% block subhead %}<p class="page-sub">Live fleet overview &middot; {{ now.strftime('%B %Y') }}</p>{% endblock %}
+{% block content %}
+
+<div class="quick-actions no-print">
+  <span class="qa-label">Quick actions</span>
+  <a class="btn btn-accent" href="{{ url_for('operations.trip_new') }}">+ New Trip</a>
+  <a class="btn" href="{{ url_for('operations.booking_new') }}">+ New Booking</a>
+  <a class="btn" href="{{ url_for('fleet.vehicle_new') }}">+ Add Vehicle</a>
+  <span class="qa-sep"></span>
+  <a class="btn" target="_blank" href="{{ url_for('exports.print_view', key='financials') }}">Financial summary</a>
+  <a class="btn" target="_blank" href="{{ url_for('exports.to_pdf', key='trips') }}">Trips PDF</a>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-ico teal">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M18.9 6l1.1 3.8V18a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1h-8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9.8L7.1 6a1 1 0 0 1 .9-.6h10a1 1 0 0 1 .9.6zM8 13h8v-3H8v3z"/></svg>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-label">Fleet size</div>
+      <div class="kpi-value">{{ stats.vehicles_total }}</div>
+      <div class="kpi-hint">{{ stats.vehicles_available }} available &middot; {{ stats.vehicles_maintenance }} in maintenance</div>
+    </div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-ico blue">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M6 2h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm2 12v2h8v-2H8zm0-4v2h8v-2H8z"/></svg>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-label">Active trips</div>
+      <div class="kpi-value">{{ stats.trips_active }}</div>
+      <div class="kpi-hint">{{ stats.trips_completed }} completed all-time</div>
+    </div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-ico amber">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2a5 5 0 0 1 2 9.6V13h1a1 1 0 0 1 1 1v1h1a1 1 0 0 1 1 1v3h-6v-1h4v-2h-4v-1a1 1 0 0 0-1-1H9V11.6A5 5 0 0 1 12 2z"/></svg>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-label">Pending bookings</div>
+      <div class="kpi-value">{{ stats.bookings_pending }}</div>
+      <div class="kpi-hint">{{ stats.passengers }} seats reserved</div>
+    </div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-ico green">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 21s-7-5.3-9.2-9.2C1.4 9.6 2.5 7 5 7c1.7 0 2.9 1 3.5 2.2C9.1 8 10.3 7 12 7c2.5 0 3.6 2.6 2.2 4.8C19 16.7 12 21 12 21z"/></svg>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-label">Trip profit</div>
+      <div class="kpi-value">{{ '%.0f' | format(stats.profit) }}</div>
+      <div class="kpi-hint">revenue {{ '%.0f' | format(stats.revenue) }} &middot; cost {{ '%.0f' | format(stats.cost) }}</div>
+    </div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-ico orange">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M5 3h8a2 2 0 0 1 2 2v7l1.5 1.5A1.5 1.5 0 0 1 17 16v3a1 1 0 0 0 2 0v-6.3a3.5 3.5 0 0 1-1-2.3V8h-1l1-3 1 3h1l-1.5 3.8V19a2 2 0 0 1-4 0v-2.6L13 15V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v7a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-6.3a3.5 3.5 0 0 0 1 2.3V19h-9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-label">Fuel spend (MTD)</div>
+      <div class="kpi-value">{{ '%.0f' | format(stats.fuel_spend) }}</div>
+      <div class="kpi-hint">{{ stats.maintenance_due }} open maintenance item(s)</div>
+    </div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-ico slate">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-3.9 0-7 2-7 4.5V20h14v-1.5c0-2.5-3.1-4.5-7-4.5z"/></svg>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-label">Drivers ready</div>
+      <div class="kpi-value">{{ stats.drivers_available }}</div>
+      <div class="kpi-hint">available for assignment</div>
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Revenue vs Operating Cost &middot; Last 7 days</h2>
+    </div>
+    <svg viewBox="0 0 360 168" style="width:100%;height:auto" role="img" aria-label="revenue and cost bar chart">
+      <g font-size="9" fill="#94a3b8" text-anchor="middle">
+        {% for c in chart %}
+        {% set x = 22 + loop.index0 * 50 %}
+        <text x="{{ x + 14 }}" y="156">{{ c.day }}</text>
+        <text x="{{ x + 7 }}" y="168" font-size="7">{{ c.label }}</text>
+        {% endfor %}
+      </g>
+      <line x1="10" y1="132" x2="352" y2="132" stroke="#e2e8f0"/>
+      {% for c in chart %}
+      {% set x = 22 + loop.index0 * 50 %}
+      {% set h = (c.rev / chart_max * 120) %}
+      <rect x="{{ x }}" y="{{ 132 - h }}" width="14" height="{{ h }}" rx="3" fill="#0f4c5c"/>
+      {% set h2 = (c.cost / chart_max * 120) %}
+      <rect x="{{ x + 17 }}" y="{{ 132 - h2 }}" width="14" height="{{ h2 }}" rx="3" fill="#e36414"/>
+      {% endfor %}
+      <g font-size="10" fill="#334155">
+        <rect x="12" y="10" width="10" height="10" rx="2" fill="#0f4c5c"/><text x="27" y="19">Revenue</text>
+        <rect x="82" y="10" width="10" height="10" rx="2" fill="#e36414"/><text x="97" y="19">Cost</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="grid-2-inner">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Trip Status</h2>
+        <span class="panel-badge">{{ trip_total }} total</span>
+      </div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 42 42" width="170" height="170">
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#eef2f6" stroke-width="4"></circle>
+          <g transform="rotate(-90 21 21)">
+            {% for seg in donut %}
+            <circle cx="21" cy="21" r="15.9155" fill="none" stroke="{{ seg.color }}" stroke-width="4"
+                    stroke-dasharray="{{ seg.dash }}" stroke-dashoffset="{{ seg.offset }}"></circle>
+            {% endfor %}
+          </g>
+          <text x="21" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">{{ trip_total }}</text>
+          <text x="21" y="28" text-anchor="middle" font-size="4.6" fill="#64748b">trips</text>
+        </svg>
+        <div class="legend">
+          {% for seg in donut %}
+          <div class="legend-item">
+            <span class="swatch" style="background:{{ seg.color }}"></span>
+            <span class="l-label">{{ seg.label }}</span>
+            <strong>{{ seg.n }}</strong>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Fleet Utilisation</h2></div>
+      <div class="stat-bars">
+        {% set total_veh = vehicle_status.values() | sum %}
+        {% for status in ['available', 'in_service', 'maintenance', 'retired'] %}
+        {% set n = vehicle_status.get(status, 0) %}
+        {% set cls = 'good' if status == 'available' else ('warn' if status == 'maintenance' else 'info') %}
+        <div class="stat-bar">
+          <span class="s-name">{{ status.replace('_',' ') }}</span>
+          <div class="track"><div class="fill {{ cls }}" style="width: {{ (n * 100 / total_veh) if total_veh else 0 }}%"></div></div>
+          <strong>{{ n }}</strong>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Recent Trips</h2>
+      <a class="panel-link" href="{{ url_for('operations.trips') }}">View all &rarr;</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Trip</th><th>Route</th><th>Vehicle</th><th>Driver</th><th>Status</th><th class="num">Seats</th></tr></thead>
+        <tbody>
+          {% for t in recent_trips %}
+          <tr>
+            <td><a href="{{ url_for('operations.trip_sheet', tid=t.id) }}">{{ t.trip_no }}</a><br><span class="muted">{{ t.departure_at or '' }}</span></td>
+            <td>{{ t.route_name or '-' }}<br><span class="muted">{{ t.origin or '' }} &rarr; {{ t.destination or '' }}</span></td>
+            <td>{{ t.plate_no or '-' }}</td>
+            <td>{{ t.driver_name or '-' }}</td>
+            <td><span class="badge {{ t.status }}">{{ t.status.replace('_',' ') }}</span></td>
+            <td class="num">{{ t.seats_booked }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="empty">No trips yet</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Upcoming Schedule</h2>
+      <a class="panel-link" href="{{ url_for('operations.trips') }}">New trip &rarr;</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Trip</th><th>Departure</th><th>Vehicle</th><th>Driver</th><th class="num">Seats</th></tr></thead>
+        <tbody>
+          {% for t in upcoming %}
+          <tr>
+            <td><a href="{{ url_for('operations.trip_sheet', tid=t.id) }}">{{ t.trip_no }}</a><br><span class="muted">{{ t.route_name or '' }}</span></td>
+            <td>{{ t.departure_at or '-' }}</td>
+            <td>{{ t.plate_no or '-' }}</td>
+            <td>{{ t.driver_name or '-' }}</td>
+            <td class="num">{{ t.seats_booked }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" class="empty">Nothing scheduled</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel-head" style="margin-top:18px"><h2>Fuel spend &middot; 30 days</h2></div>
+    {% if fuel_bars %}
+    <div class="stat-bars">
+      {% for f in fuel_bars %}
+      <div class="stat-bar">
+        <span class="s-name">{{ f.plate }}</span>
+        <div class="track"><div class="fill orange" style="width:{{ f.pct }}%"></div></div>
+        <strong>{{ '%.0f' | format(f.cost) }}</strong>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">No fuel records in the last 30 days</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-head"><h2>Maintenance Alerts</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Vehicle</th><th>Work</th><th>Status</th><th>Next Due</th></tr></thead>
+        <tbody>
+          {% for a in alerts %}
+          <tr>
+            <td><strong>{{ a.plate_no }}</strong> <span class="muted">{{ a.make }} {{ a.model }}</span></td>
+            <td>{{ a.description or '-' }}</td>
+            <td><span class="badge {{ a.status }}">{{ a.status.replace('_',' ') }}</span></td>
+            <td>{{ a.next_due or '-' }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="empty">No open maintenance</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>Fleet Composition</h2></div>
+    {% if fleet_share %}
+    <div class="stat-bars">
+      {% set total_fleet = fleet_share.values() | sum %}
+      {% for vt, n in fleet_share.items() %}
+      <div class="stat-bar">
+        <span class="s-name">{{ vt }}</span>
+        <div class="track"><div class="fill teal" style="width: {{ n * 100 / total_fleet }}%"></div></div>
+        <strong>{{ n }}</strong>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">No vehicles yet</p>
+    {% endif %}
+
+    <div class="panel-head" style="margin-top:18px"><h2>Licence Watchlist</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Driver</th><th>License</th><th>Expires</th></tr></thead>
+        <tbody>
+          {% for a in license_alerts %}
+          <tr>
+            <td>{{ a.name }}</td>
+            <td>{{ a.license_no or '-' }}</td>
+            <td>{{ a.license_expiry }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="3" class="empty">No licences expiring in 60 days</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

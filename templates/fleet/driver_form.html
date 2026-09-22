@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if driver else 'New' }} Driver - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Driver ' + driver.name if driver else 'New Driver' }}{% endblock %}
+{% block content %}
+<div class="panel">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label>Employee no (auto if blank)</label>
+        <input type="text" name="employee_no" value="{{ driver.employee_no if driver else '' }}" placeholder="DRV-006">
+      </div>
+      <div class="field">
+        <label>Full name *</label>
+        <input type="text" name="name" required value="{{ driver.name if driver else '' }}">
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input type="text" name="phone" value="{{ driver.phone if driver else '' }}">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ driver.email if driver else '' }}">
+      </div>
+      <div class="field">
+        <label>Licence number</label>
+        <input type="text" name="license_no" value="{{ driver.license_no if driver else '' }}">
+      </div>
+      <div class="field">
+        <label>Licence expiry</label>
+        <input type="date" name="license_expiry" value="{{ driver.license_expiry if driver else '' }}">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select name="status">
+          {% for s in driver_status %}
+          <option value="{{ s }}" {% if driver and driver.status == s %}selected{% endif %}>{{ s.replace('_',' ') }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Hired on</label>
+        <input type="date" name="hired_at" value="{{ driver.hired_at if driver else '' }}">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if driver else 'Add driver' }}</button>
+      <a class="btn" href="{{ url_for('fleet.drivers') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

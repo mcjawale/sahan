@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if trip else 'New' }} Trip - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Trip ' + trip.trip_no if trip else 'New Trip' }}{% endblock %}
+{% block content %}
+<div class="panel">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label>Route</label>
+        <select name="route_id">
+          <option value="">-- select route --</option>
+          {% for r in routes %}
+          <option value="{{ r.id }}" {% if trip and trip.route_id == r.id %}selected{% endif %}>
+            {{ r.name }} ({{ r.origin }} &rarr; {{ r.destination }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Vehicle</label>
+        <select name="vehicle_id">
+          <option value="">-- select vehicle --</option>
+          {% for v in vehicles %}
+          <option value="{{ v.id }}" {% if trip and trip.vehicle_id == v.id %}selected{% endif %}>
+            {{ v.plate_no }} - {{ v.make }} {{ v.model }} ({{ v.status }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Driver</label>
+        <select name="driver_id">
+          <option value="">-- select driver --</option>
+          {% for d in drivers %}
+          <option value="{{ d.id }}" {% if trip and trip.driver_id == d.id %}selected{% endif %}>
+            {{ d.name }} ({{ d.status }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Departure</label>
+        <input type="datetime-local" name="departure_at" value="{{ trip.departure_at if trip else '' }}">
+      </div>
+      <div class="field">
+        <label>Arrival</label>
+        <input type="datetime-local" name="arrival_at" value="{{ trip.arrival_at if trip else '' }}">
+      </div>
+      <div class="field">
+        <label>Distance (km) - auto from route if blank</label>
+        <input type="number" name="distance_km" min="0" step="0.1" value="{{ trip.distance_km if trip and trip.distance_km is not none else '' }}">
+      </div>
+      <div class="field">
+        <label>Revenue</label>
+        <input type="number" name="revenue" min="0" step="0.01" value="{{ trip.revenue if trip else 0 }}">
+      </div>
+      <div class="field">
+        <label>Operating cost</label>
+        <input type="number" name="cost" min="0" step="0.01" value="{{ trip.cost if trip else 0 }}">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select name="status">
+          {% for s in statuses %}
+          <option value="{{ s }}" {% if trip and trip.status == s %}selected{% endif %}>{{ s.replace('_',' ') }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field wide">
+        <label>Notes</label>
+        <textarea name="notes">{{ trip.notes if trip else '' }}</textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if trip else 'Create trip' }}</button>
+      <a class="btn" href="{{ url_for('operations.trips') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

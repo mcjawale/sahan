@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Login - {{ APP_NAME }}{% endblock %}
+{% block anon %}
+<div class="login-wrap">
+  <form class="login-card" method="post">
+    <div class="login-logo">
+      <div class="logo">SF</div>
+      <div>
+        <h1>Sahan Fleet</h1>
+        <p class="sub" style="margin:0">Transport Management System</p>
+      </div>
+    </div>
+    <p class="sub">Sign in to the fleet command center</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ 'ok' if category == 'ok' else 'error' }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" type="text" name="username" required autofocus autocomplete="username">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary" type="submit">Sign in</button>
+    <p class="hint">Default: admin / admin123</p>
+  </form>
+</div>
+{% endblock %}

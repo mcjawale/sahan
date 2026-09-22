@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if route else 'New' }} Route - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Route ' + route.name if route else 'New Route' }}{% endblock %}
+{% block content %}
+<div class="panel" style="max-width:640px">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field wide">
+        <label>Route name *</label>
+        <input type="text" name="name" required value="{{ route.name if route else '' }}" placeholder="Airport Express">
+      </div>
+      <div class="field">
+        <label>Origin *</label>
+        <input type="text" name="origin" required value="{{ route.origin if route else '' }}">
+      </div>
+      <div class="field">
+        <label>Destination *</label>
+        <input type="text" name="destination" required value="{{ route.destination if route else '' }}">
+      </div>
+      <div class="field">
+        <label>Distance (km)</label>
+        <input type="number" name="distance_km" min="0" step="0.1" value="{{ route.distance_km if route else 0 }}">
+      </div>
+      <div class="field">
+        <label>Estimated hours</label>
+        <input type="number" name="estimated_hours" min="0" step="0.1" value="{{ route.estimated_hours if route else 0 }}">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if route else 'Add route' }}</button>
+      <a class="btn" href="{{ url_for('fleet.routes') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

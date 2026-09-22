@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Reports - {{ APP_NAME }}{% endblock %}
+{% block heading %}Reports &amp; Exports{% endblock %}
+{% block content %}
+
+<div class="panel">
+  <h2>Export any register or report</h2>
+  <p class="muted">
+    Download as <strong>CSV</strong> (opens in Excel / Google Sheets) or <strong>PDF</strong> (print-ready),
+    or open the <strong>print view</strong> and use your browser's "Save as PDF".
+  </p>
+</div>
+
+<div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+  {% for key, ds in datasets.items() %}
+  <div class="card accent">
+    <div class="label">{{ key | upper }}</div>
+    <div class="value sm" style="font-size:17px">{{ ds.title }}</div>
+    <div class="hint">{{ ds.headers | length }} columns</div>
+    <div class="actions mt">
+      <a class="btn btn-sm btn-primary" href="{{ url_for('exports.to_csv', key=key) }}">CSV</a>
+      <a class="btn btn-sm btn-accent" href="{{ url_for('exports.to_pdf', key=key) }}">PDF</a>
+      <a class="btn btn-sm" target="_blank" href="{{ url_for('exports.print_view', key=key) }}">Print</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="panel">
+  <h2>Tips</h2>
+  <ul class="muted">
+    <li>CSV exports include column headers and totals where applicable.</li>
+    <li>PDF exports are landscape A4 with the system letterhead and generation timestamp.</li>
+    <li>Individual documents are also printable: open a trip sheet or booking receipt and click <em>Print / Save PDF</em>.</li>
+  </ul>
+</div>
+
+{% endblock %}

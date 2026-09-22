@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "macros.html" import list_toolbar, doc_head %}
+{% block title %}Routes - {{ APP_NAME }}{% endblock %}
+{% block heading %}Routes{% endblock %}
+{% block content %}
+{{ doc_head('Route Directory') }}
+{{ list_toolbar(q, url_for('fleet.route_new'), 'Add Route', 'routes') }}
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Route</th><th>Origin</th><th>Destination</th>
+        <th class="num">Distance (km)</th><th class="num">Est. Hours</th><th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.name }}</strong></td>
+        <td>{{ r.origin }}</td>
+        <td>{{ r.destination }}</td>
+        <td class="num">{{ '%.1f' | format(r.distance_km) }}</td>
+        <td class="num">{{ '%.1f' | format(r.estimated_hours) }}</td>
+        <td class="no-print">
+          <div class="actions">
+            <a class="btn btn-sm" href="{{ url_for('fleet.route_edit', rid=r.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('fleet.route_delete', rid=r.id) }}"
+                  onsubmit="return confirm('Delete route {{ r.name }}?');">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="empty">No routes found</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

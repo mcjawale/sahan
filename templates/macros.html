@@ -1,0 +1,32 @@
+{% macro list_toolbar(q, new_url, new_label, entity, status=None, statuses=None) %}
+<div class="toolbar no-print">
+  <div class="left">
+    <form method="get" style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="text" name="q" value="{{ q }}" placeholder="Search {{ entity }}...">
+      {% if statuses %}
+      <select name="status" onchange="this.form.submit()">
+        <option value="">All statuses</option>
+        {% for s in statuses %}
+        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s.replace('_',' ') }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
+      <button class="btn" type="submit">Search</button>
+      {% if q or status %}<a class="btn" href="{{ request.path }}">Reset</a>{% endif %}
+    </form>
+  </div>
+  <div class="right">
+    <a class="btn" href="{{ url_for('exports.to_csv', key=entity) }}">Export CSV</a>
+    <a class="btn" href="{{ url_for('exports.to_pdf', key=entity) }}">Export PDF</a>
+    <a class="btn" href="{{ url_for('exports.print_view', key=entity) }}">Print view</a>
+    <a class="btn btn-primary" href="{{ new_url }}">+ {{ new_label }}</a>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro doc_head(title, generated=None) %}
+<div class="doc-head">
+  <h2>Sahan Fleet Transport Management System</h2>
+  <p>{{ title }} &middot; Generated {{ generated }}</p>
+</div>
+{% endmacro %}

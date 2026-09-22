@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if booking else 'New' }} Booking - {{ APP_NAME }}{% endblock %}
+{% block heading %}{{ 'Edit Booking ' + booking.booking_no if booking else 'New Booking' }}{% endblock %}
+{% block content %}
+<div class="panel">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label>Passenger name *</label>
+        <input type="text" name="passenger_name" required value="{{ booking.passenger_name if booking else '' }}">
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input type="text" name="phone" value="{{ booking.phone if booking else '' }}">
+      </div>
+      <div class="field">
+        <label>Trip</label>
+        <select name="trip_id">
+          <option value="">-- no trip assigned --</option>
+          {% for t in trips %}
+          <option value="{{ t.id }}" {% if booking and booking.trip_id == t.id %}selected{% endif %}>
+            {{ t.trip_no }} - {{ t.label }} ({{ t.departure_at }}) [{{ t.status }}]
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select name="status">
+          {% for s in statuses %}
+          <option value="{{ s }}" {% if booking and booking.status == s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Pickup point</label>
+        <input type="text" name="pickup" value="{{ booking.pickup if booking else '' }}">
+      </div>
+      <div class="field">
+        <label>Drop-off point</label>
+        <input type="text" name="dropoff" value="{{ booking.dropoff if booking else '' }}">
+      </div>
+      <div class="field">
+        <label>Seats</label>
+        <input type="number" name="seats" min="1" value="{{ booking.seats if booking else 1 }}">
+      </div>
+      <div class="field">
+        <label>Fare</label>
+        <input type="number" name="fare" min="0" step="0.01" value="{{ booking.fare if booking else 0 }}">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{{ 'Save changes' if booking else 'Create booking' }}</button>
+      <a class="btn" href="{{ url_for('operations.bookings') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

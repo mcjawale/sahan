@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "macros.html" import list_toolbar, doc_head %}
+{% block title %}Drivers - {{ APP_NAME }}{% endblock %}
+{% block heading %}Drivers{% endblock %}
+{% block content %}
+{{ doc_head('Driver Register') }}
+{{ list_toolbar(q, url_for('fleet.driver_new'), 'Add Driver', 'drivers') }}
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Employee No</th><th>Name</th><th>Phone</th><th>Email</th>
+        <th>License</th><th>Expiry</th><th>Status</th><th>Hired</th><th class="no-print">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in rows %}
+      <tr>
+        <td><strong>{{ d.employee_no }}</strong></td>
+        <td>{{ d.name }}</td>
+        <td>{{ d.phone or '-' }}</td>
+        <td class="muted">{{ d.email or '-' }}</td>
+        <td>{{ d.license_no or '-' }}</td>
+        <td>{{ d.license_expiry or '-' }}</td>
+        <td><span class="badge {{ d.status }}">{{ d.status.replace('_',' ') }}</span></td>
+        <td>{{ d.hired_at or '-' }}</td>
+        <td class="no-print">
+          <div class="actions">
+            <a class="btn btn-sm" href="{{ url_for('fleet.driver_edit', did=d.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('fleet.driver_delete', did=d.id) }}"
+                  onsubmit="return confirm('Delete driver {{ d.name }}?');">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="empty">No drivers found</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
