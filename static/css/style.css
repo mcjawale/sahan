@@ -301,7 +301,8 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .flash.error { background: #fee2e2; color: var(--err); border: 1px solid #fecaca; }
 
 .empty { padding: 26px; text-align: center; color: var(--muted); }
-.group-head td {
+.plate-section { margin-bottom: 20px; }
+.group-head {
   background: linear-gradient(90deg, #dbeafe, #eff6ff);
   color: #1e3a5f;
   font-weight: 800;
@@ -309,8 +310,27 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   font-size: 13px;
   text-transform: uppercase;
   border-left: 4px solid #2563eb;
-  padding: 7px 12px;
+  border-radius: 8px 8px 0 0;
+  padding: 9px 12px;
 }
+.plate-trips {
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+.plate-trips-title {
+  background: linear-gradient(90deg, #eff6ff, #f8fafc);
+  color: #1e40af;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-bottom: 1px solid #bfdbfe;
+}
+.plate-trips table { border: 0; }
 .muted { color: var(--muted); }
 .mt { margin-top: 12px; }
 .actions { display: flex; gap: 6px; flex-wrap: wrap; }

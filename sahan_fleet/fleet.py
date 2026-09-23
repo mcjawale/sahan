@@ -35,9 +35,35 @@ def _search(rows, fields):
 @login_required
 def vehicles():
     db = get_db()
-    rows = db.execute("SELECT * FROM vehicles ORDER BY plate_no").fetchall()
+    rows = db.execute("SELECT * FROM vehicles ORDER BY plate_no, id").fetchall()
+    rows = _search(rows, ("plate_no", "make", "model", "status", "vehicle_type"))
+
+    groups = []
+    for r in rows:
+        if not groups or groups[-1]["plate"] != r["plate_no"]:
+            groups.append({"plate": r["plate_no"], "trucks": []})
+        groups[-1]["trucks"].append(r)
+
+    all_trips = db.execute(
+        """SELECT t.id, t.trip_no, t.departure_at, t.arrival_at, t.revenue, t.status,
+                  r.name AS route_name, r.origin, r.destination, d.name AS driver_name, t.vehicle_id
+           FROM trips t
+           LEFT JOIN routes r ON r.id = t.route_id
+           LEFT JOIN drivers d ON d.id = t.driver_id
+           ORDER BY t.departure_at DESC"""
+    ).fetchall()
+    plate_of = {r["id"]: r["plate_no"] for r in rows}
+    trips_by_plate = {}
+    for t in all_trips:
+        plate = plate_of.get(t["vehicle_id"])
+        if plate:
+            trips_by_plate.setdefault(plate, []).append(t)
+
     return render_template(
-        "fleet/vehicles.html", rows=_search(rows, ("plate_no", "make", "model", "status", "vehicle_type")), q=_q()
+        "fleet/vehicles.html",
+        groups=groups,
+        trips_by_plate=trips_by_plate,
+        q=_q(),
     )
 
 

@@ -6,40 +6,71 @@
 {{ doc_head('Vehicle Register') }}
 {{ list_toolbar(q, url_for('fleet.vehicle_new'), 'Add Vehicle', 'vehicles') }}
 
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>Driver Name</th><th>Driver ID</th><th>Description</th>
-        <th class="num">Quantity / Commodity</th><th>Contacts</th><th>Remarks</th><th class="no-print">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for v in rows %}
-      {% if loop.changed(v.plate_no) %}
-      <tr class="group-head"><td colspan="7">Number Plate: {{ v.plate_no }}</td></tr>
-      {% endif %}
-      <tr>
-        <td><strong>{{ v.make }}</strong></td>
-        <td>{{ v.plate_no }}</td>
-        <td>{{ v.model }} {% if v.year %}<span class="muted">({{ v.year }})</span>{% endif %} &middot; {{ v.vehicle_type }}</td>
-        <td class="num">{{ v.capacity }}</td>
-        <td class="muted">&mdash;</td>
-        <td class="muted">{{ v.notes or '' }}</td>
-        <td class="no-print">
-          <div class="actions">
-            <a class="btn btn-sm" href="{{ url_for('fleet.vehicle_edit', vid=v.id) }}">Edit</a>
-            <form method="post" action="{{ url_for('fleet.vehicle_delete', vid=v.id) }}"
-                  onsubmit="return confirm('Delete vehicle {{ v.plate_no }}?');">
-              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-            </form>
-          </div>
-        </td>
-      </tr>
-      {% else %}
-      <tr><td colspan="7" class="empty">No vehicles found</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+{% for g in groups %}
+<div class="plate-section">
+  <div class="group-head">Number Plate: {{ g.plate }}</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Driver Name</th><th>Driver ID</th><th>Description</th>
+          <th class="num">Quantity / Commodity</th><th>Contacts</th><th>Remarks</th><th class="no-print">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in g.trucks %}
+        <tr>
+          <td><strong>{{ v.make }}</strong></td>
+          <td>{{ v.plate_no }}</td>
+          <td>{{ v.model }} {% if v.year %}<span class="muted">({{ v.year }})</span>{% endif %} &middot; {{ v.vehicle_type }}</td>
+          <td class="num">{{ v.capacity }}</td>
+          <td class="muted">&mdash;</td>
+          <td class="muted">{{ v.notes or '' }}</td>
+          <td class="no-print">
+            <div class="actions">
+              <a class="btn btn-sm" href="{{ url_for('fleet.vehicle_edit', vid=v.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('fleet.vehicle_delete', vid=v.id) }}"
+                    onsubmit="return confirm('Delete vehicle {{ v.plate_no }}?');">
+                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty">No trucks found</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="plate-trips">
+    <div class="plate-trips-title">All Trips &mdash; Plate {{ g.plate }}</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Trip No</th><th>Route</th><th>Departure</th><th>Arrival</th><th>Driver</th>
+          <th class="num">Revenue</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in trips_by_plate.get(g.plate, []) %}
+        <tr>
+          <td><strong><a href="{{ url_for('operations.trip_sheet', tid=t.id) }}">{{ t.trip_no }}</a></strong></td>
+          <td>{{ t.route_name or '-' }}<br><span class="muted">{{ (t.origin or '') }} &rarr; {{ (t.destination or '') }}</span></td>
+          <td>{{ t.departure_at or '-' }}</td>
+          <td>{{ t.arrival_at or '-' }}</td>
+          <td>{{ t.driver_name or '-' }}</td>
+          <td class="num">{{ '%.2f' | format(t.revenue) }}</td>
+          <td><span class="badge {{ t.status }}">{{ t.status.replace('_',' ') }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty">No trips yet for this truck</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
+{% else %}
+<div class="table-wrap"><table><tbody><tr><td class="empty">No vehicles found</td></tr></tbody></table></div>
+{% endfor %}
 {% endblock %}
