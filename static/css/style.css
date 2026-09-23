@@ -82,6 +82,7 @@ a:hover { text-decoration: underline; }
 
 .brand-line { font-weight: 800; font-size: 16px; letter-spacing: .3px; color: #fff; }
 .brand-sub { font-size: 11px; color: rgb(255 255 255 / .75); font-weight: 600; letter-spacing: .5px; text-transform: uppercase; }
+.logo .truck { width: 28px; height: 28px; }
 
 .topbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .date-chip {
@@ -363,6 +364,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
 .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
 .login-logo .logo { width: 46px; height: 46px; font-size: 18px; }
+.login-logo .logo .truck { width: 32px; height: 32px; }
 .login-card h1 { font-size: 20px; margin: 0; color: var(--brand-dark); }
 .login-card p.sub { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
 .login-card .field { margin-bottom: 14px; }
