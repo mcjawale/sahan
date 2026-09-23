@@ -16,6 +16,9 @@
     </thead>
     <tbody>
       {% for v in rows %}
+      {% if loop.changed(v.plate_no) %}
+      <tr class="group-head"><td colspan="7">Number Plate: {{ v.plate_no }}</td></tr>
+      {% endif %}
       <tr>
         <td><strong>{{ v.make }}</strong></td>
         <td>{{ v.plate_no }}</td>

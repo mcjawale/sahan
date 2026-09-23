@@ -301,6 +301,16 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .flash.error { background: #fee2e2; color: var(--err); border: 1px solid #fecaca; }
 
 .empty { padding: 26px; text-align: center; color: var(--muted); }
+.group-head td {
+  background: linear-gradient(90deg, #dbeafe, #eff6ff);
+  color: #1e3a5f;
+  font-weight: 800;
+  letter-spacing: .5px;
+  font-size: 13px;
+  text-transform: uppercase;
+  border-left: 4px solid #2563eb;
+  padding: 7px 12px;
+}
 .muted { color: var(--muted); }
 .mt { margin-top: 12px; }
 .actions { display: flex; gap: 6px; flex-wrap: wrap; }
