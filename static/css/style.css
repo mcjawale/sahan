@@ -403,6 +403,63 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   letter-spacing: .5px;
 }
 
+/* ---------- Advertisement banner (login) ---------- */
+.ad-banner {
+  position: relative;
+  overflow: hidden;
+  margin: 14px 24px 0;
+  border-radius: 14px;
+  border: 2px dashed #f59e0b;
+  background: linear-gradient(90deg, #fef3c7 0%, #fffbeb 40%, #fef3c7 100%);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, .4), inset 0 0 0 3px rgb(255 255 255 / .6);
+  white-space: nowrap;
+  z-index: 1;
+}
+.ad-banner::before {
+  content: "AD";
+  position: absolute;
+  top: 7px;
+  right: 9px;
+  z-index: 2;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(180, 83, 9, .4);
+}
+.ad-banner::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 9px;
+  border: 1px solid rgb(180 83 9 / .25);
+  pointer-events: none;
+}
+.ad-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 60px;
+  white-space: nowrap;
+  padding: 12px 0;
+  animation: ad-move 26s linear infinite;
+  will-change: transform;
+}
+.ad-track span {
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #7c2d12;
+  text-shadow: 0 1px 0 rgb(255 255 255 / .8);
+}
+@keyframes ad-move {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* ---------- Login ---------- */
 .login-screen { display: flex; flex-direction: column; min-height: 100vh; }
 .login-screen .login-wrap { flex: 1; }
