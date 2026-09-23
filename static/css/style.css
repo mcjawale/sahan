@@ -53,6 +53,20 @@ a:hover { text-decoration: underline; }
   box-shadow: 0 2px 12px rgba(23, 37, 84, .35);
 }
 
+.title-bar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0,0,0,.35);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 .brand-lockup { display: flex; align-items: center; gap: 12px; }
 
 .logo {
@@ -321,6 +335,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .nav-group { display: none; }
   .main { padding: 16px; }
   .topbar { padding: 8px 14px; }
+  .title-bar-title { display: none; }
 }
 
 /* ---------- Print ---------- */
