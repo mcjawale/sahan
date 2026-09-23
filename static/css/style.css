@@ -329,8 +329,10 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 
 /* ---------- Login ---------- */
+.login-screen { display: flex; flex-direction: column; min-height: 100vh; }
+.login-screen .login-wrap { flex: 1; }
 .login-wrap {
-  min-height: 100vh;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Login - {{ APP_NAME }}{% endblock %}
 {% block anon %}
-<div class="login-wrap">
+<div class="login-screen">
+  <header class="topbar">
+    <div class="brand-lockup">
+      <div class="logo">MCJ</div>
+      <div>
+        <div class="brand-line">MCJ SAHAN</div>
+        <div class="brand-sub">Fleet Management System</div>
+      </div>
+    </div>
+    <div class="title-bar-title">{{ APP_NAME | upper }}</div>
+    <div class="topbar-right"></div>
+  </header>
+  <div class="login-wrap">
   <form class="login-card" method="post">
     <div class="login-logo">
       <div class="logo">MCJ</div>
@@ -29,5 +41,6 @@
     <button class="btn btn-primary" type="submit">Sign in</button>
     <p class="hint">Default: admin / admin123</p>
   </form>
+  </div>
 </div>
 {% endblock %}
