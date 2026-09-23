@@ -300,6 +300,34 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .doc-head { display: none; }
 
+/* ---------- Footer ---------- */
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: linear-gradient(90deg, #172554 0%, #1e40af 100%);
+  color: #dbe7ec;
+  padding: 14px 24px;
+  margin-top: auto;
+  border-top: 3px solid #2563eb;
+  font-size: 13px;
+}
+.site-footer .footer-brand {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  padding: 4px 12px;
+  border-radius: 8px;
+}
+.site-footer .footer-lbl { color: #93b4e8; }
+.site-footer .footer-contact { display: flex; gap: 20px; flex-wrap: wrap; }
+.site-footer a { color: #bfdbfe; font-weight: 600; text-decoration: none; }
+.site-footer a:hover { color: #fff; text-decoration: underline; }
+
 /* ---------- Login ---------- */
 .login-wrap {
   min-height: 100vh;
@@ -342,7 +370,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 @media print {
   @page { size: landscape; margin: 12mm; }
   body { background: #fff; font-size: 11px; }
-  .sidebar, .toolbar, .no-print, .actions, .flash, .quick-actions, .topbar, .page-head { display: none !important; }
+  .sidebar, .toolbar, .no-print, .actions, .flash, .quick-actions, .topbar, .page-head, .site-footer { display: none !important; }
   .main { padding: 0; }
   .layout { display: block; }
   .panel, .table-wrap { border: 0; padding: 0; box-shadow: none; margin: 0; }
