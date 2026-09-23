@@ -65,6 +65,11 @@ a:hover { text-decoration: underline; }
   text-shadow: 0 1px 3px rgba(0,0,0,.35);
   white-space: nowrap;
   pointer-events: none;
+  padding-bottom: 3px;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #93c5fd;
+  text-underline-offset: 4px;
 }
 
 .brand-lockup { display: flex; align-items: center; gap: 12px; }
