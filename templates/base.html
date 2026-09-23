@@ -19,7 +19,10 @@
         <div class="brand-sub">Actros Lorry Truck</div>
       </div>
     </div>
-    <div class="title-bar-title">SAHAN FLEET MANAGEMENT SYSTEM</div>
+    <div class="title-bar-center">
+      <div class="title-bar-title">SAHAN FLEET MANAGEMENT SYSTEM</div>
+      <div class="title-bar-tagline">All Kenya KTA members can use our system &middot; Together we can</div>
+    </div>
     <div class="topbar-right">
       <div class="date-chip">{{ now.strftime('%A, %d %B %Y') }} <span class="dot">&#8226;</span> {{ now.strftime('%I:%M %p') }}</div>
       <div class="user-chip">{{ g.user_name or 'Operator' }} <a href="{{ url_for('auth.logout') }}" title="Logout">Sign out</a></div>
