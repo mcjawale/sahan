@@ -44,13 +44,13 @@ a:hover { text-decoration: underline; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: linear-gradient(90deg, var(--brand-deep) 0%, var(--brand) 55%, #1d4ed8 100%);
-  border-bottom: 3px solid var(--brand-2);
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 55%, #3b82f6 100%);
+  border-bottom: 3px solid #93c5fd;
   padding: 10px 24px;
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 2px 12px rgba(23, 37, 84, .35);
+  box-shadow: 0 2px 12px rgba(29, 78, 216, .4);
 }
 
 .title-bar-title {
