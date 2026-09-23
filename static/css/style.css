@@ -302,6 +302,17 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .doc-head { display: none; }
 
 /* ---------- Footer ---------- */
+.bg-truck {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: .06;
+}
+.bg-truck svg { width: min(76vw, 820px); height: auto; }
 .site-footer {
   margin-top: auto;
   background: linear-gradient(90deg, #172554 0%, #1e40af 100%);
@@ -385,7 +396,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 @media print {
   @page { size: landscape; margin: 12mm; }
   body { background: #fff; font-size: 11px; }
-  .sidebar, .toolbar, .no-print, .actions, .flash, .quick-actions, .topbar, .page-head, .site-footer { display: none !important; }
+  .sidebar, .toolbar, .no-print, .actions, .flash, .quick-actions, .topbar, .page-head, .site-footer, .bg-truck { display: none !important; }
   .main { padding: 0; }
   .layout { display: block; }
   .panel, .table-wrap { border: 0; padding: 0; box-shadow: none; margin: 0; }
