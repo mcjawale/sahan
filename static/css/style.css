@@ -369,7 +369,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   margin-top: auto;
   background: linear-gradient(90deg, #172554 0%, #1e40af 100%);
   border-top: 3px solid #2563eb;
-  color: #dbe7ec;
+  color: #bfdbfe;
   font-size: 13px;
   flex-shrink: 0;
 }
@@ -390,9 +390,9 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   padding: 4px 12px;
   border-radius: 8px;
 }
-.site-footer .footer-lbl { color: #93b4e8; }
+.site-footer .footer-lbl { color: #93c5fd; }
 .site-footer .footer-contact { display: flex; gap: 20px; flex-wrap: wrap; }
-.site-footer a { color: #bfdbfe; font-weight: 600; text-decoration: none; }
+.site-footer a { color: #93c5fd; font-weight: 600; text-decoration: none; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 .footer-copy {
   border-top: 1px solid rgb(255 255 255 / .2);
