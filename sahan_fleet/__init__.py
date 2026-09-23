@@ -25,7 +25,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev-change-me-in-production"),
         DATABASE=db_path,
-        APP_NAME="Sahan Fleet Transport Management System",
+        APP_NAME="MCJ Sahan Fleet Management System",
         REQUIRE_LOGIN=os.environ.get("REQUIRE_LOGIN", "1") == "1",
     )
     if test_config is None:

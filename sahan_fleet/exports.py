@@ -14,7 +14,7 @@ from .db import get_db
 
 bp = Blueprint("exports", __name__, url_prefix="/export")
 
-TITLE = "Sahan Fleet Transport Management System"
+TITLE = "MCJ Sahan Fleet Management System"
 
 DATASETS = {
     "vehicles": {
@@ -245,7 +245,7 @@ def to_pdf(key):
     story.append(table)
     story.append(Spacer(1, 10))
     story.append(Paragraph(
-        f"{len(rows)} record(s) | Sahan Fleet Transport Management System | Page footer generated {datetime.now():%Y-%m-%d}",
+        f"{len(rows)} record(s) | MCJ Sahan Fleet Management System | Page footer generated {datetime.now():%Y-%m-%d}",
         sub,
     ))
     doc.build(story)
