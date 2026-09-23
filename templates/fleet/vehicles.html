@@ -10,20 +10,18 @@
   <table>
     <thead>
       <tr>
-        <th>Plate No</th><th>Vehicle</th><th>Type</th><th>Fuel</th>
-        <th class="num">Capacity</th><th class="num">Odometer</th><th>Status</th><th>Notes</th><th class="no-print">Actions</th>
+        <th>Driver Name</th><th>Driver ID</th><th>Description</th>
+        <th class="num">Quantity / Commodity</th><th>Contacts</th><th>Remarks</th><th class="no-print">Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for v in rows %}
       <tr>
-        <td><strong>{{ v.plate_no }}</strong></td>
-        <td>{{ v.make }} {{ v.model }} {% if v.year %}<span class="muted">({{ v.year }})</span>{% endif %}</td>
-        <td>{{ v.vehicle_type }}</td>
-        <td>{{ v.fuel_type }}</td>
+        <td><strong>{{ v.make }}</strong></td>
+        <td>{{ v.plate_no }}</td>
+        <td>{{ v.model }} {% if v.year %}<span class="muted">({{ v.year }})</span>{% endif %} &middot; {{ v.vehicle_type }}</td>
         <td class="num">{{ v.capacity }}</td>
-        <td class="num">{{ '%.0f' | format(v.odometer) }}</td>
-        <td><span class="badge {{ v.status }}">{{ v.status.replace('_',' ') }}</span></td>
+        <td class="muted">&mdash;</td>
         <td class="muted">{{ v.notes or '' }}</td>
         <td class="no-print">
           <div class="actions">
@@ -36,7 +34,7 @@
         </td>
       </tr>
       {% else %}
-      <tr><td colspan="9" class="empty">No vehicles found</td></tr>
+      <tr><td colspan="7" class="empty">No vehicles found</td></tr>
       {% endfor %}
     </tbody>
   </table>
